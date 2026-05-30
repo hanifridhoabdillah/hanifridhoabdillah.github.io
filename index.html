@@ -126,7 +126,7 @@
                     <a href="#research" class="text-offwhite hover:text-gold transition-colors">Research</a>
                     <a href="#experience" class="text-offwhite hover:text-gold transition-colors">Experience</a>
                     <a href="#skills" class="text-offwhite hover:text-gold transition-colors">Skills</a>
-                    <a href="#contact" class="px-5 py-2.5 bg-gold/10 text-gold border border-gold/30 hover:bg-gold hover:text-navy rounded-full transition-all flex items-center gap-2">
+                    <a href="javascript:void(0)" onclick="toggleCtaModal()" class="px-5 py-2.5 bg-gold/10 text-gold border border-gold/30 hover:bg-gold hover:text-navy rounded-full transition-all flex items-center gap-2">
                         Get in Touch <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -139,7 +139,7 @@
                     <a href="#research" class="mobile-link text-offwhite hover:text-gold transition-colors block py-2">Research</a>
                     <a href="#experience" class="mobile-link text-offwhite hover:text-gold transition-colors block py-2">Experience</a>
                     <a href="#skills" class="mobile-link text-offwhite hover:text-gold transition-colors block py-2">Skills</a>
-                    <a href="#contact" class="mobile-link mt-2 px-5 py-2.5 bg-gold/10 text-gold border border-gold/30 hover:bg-gold hover:text-navy rounded-full transition-all flex items-center justify-center gap-2 w-full">
+                    <a href="javascript:void(0)" onclick="toggleCtaModal()" class="mobile-link mt-2 px-5 py-2.5 bg-gold/10 text-gold border border-gold/30 hover:bg-gold hover:text-navy rounded-full transition-all flex items-center justify-center gap-2 w-full">
                         Get in Touch <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -451,6 +451,43 @@
         </div>
     </section>
 
+    <!-- Call to Action Modal -->
+    <div id="cta-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-navy/90 backdrop-blur-md cursor-pointer transition-opacity" onclick="toggleCtaModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="glass-dark relative w-full max-w-lg rounded-2xl p-8 sm:p-10 shadow-2xl transform scale-95 transition-transform duration-300 border border-gold/30">
+            <button onclick="toggleCtaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gold transition-colors focus:outline-none p-1 bg-navy/50 rounded-full">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="text-center mb-8 mt-2">
+                <div class="w-16 h-16 bg-gold/10 text-gold rounded-full flex items-center justify-center mx-auto mb-5 border border-gold/30 shadow-[0_0_20px_rgba(216,162,76,0.15)]">
+                    <i data-lucide="send" class="w-8 h-8 ml-1"></i>
+                </div>
+                <h3 class="font-display text-3xl font-bold text-white mb-3">Let's Collaborate!</h3>
+                <p class="text-gray-300 leading-relaxed text-sm md:text-base">I'm currently open for new opportunities, research collaborations, and exciting projects in Geoscience.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="mailto:abdillahhanifridho@gmail.com" class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gold text-navy font-bold rounded-xl hover:bg-sand transition-all transform hover:-translate-y-1 shadow-lg">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    Email Me Directly
+                </a>
+                <a href="https://www.linkedin.com/in/hanifridhoabdillah" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-3 px-6 py-4 border border-steel text-offwhite font-medium rounded-xl hover:border-[#0077b5] hover:bg-[#0077b5]/10 transition-all transform hover:-translate-y-1 glass-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0077b5]">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect width="4" height="12" x="2" y="9"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                    Connect on LinkedIn
+                </a>
+            </div>
+            <p class="text-center text-xs text-gray-500 mt-6">Looking forward to hearing from you!</p>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         // Initialize Lucide Icons
@@ -539,6 +576,45 @@
                 }
             }, 500);
         });
+
+        // CTA Modal Logic
+        const ctaModal = document.getElementById('cta-modal');
+        const ctaModalContent = ctaModal.querySelector('.glass-dark');
+
+        function toggleCtaModal() {
+            // Mark as shown so the timer doesn't pop it up if they manually opened it
+            sessionStorage.setItem('ctaShown', 'true'); 
+            
+            const isHidden = ctaModal.classList.contains('hidden');
+            if (isHidden) {
+                ctaModal.classList.remove('hidden');
+                ctaModal.classList.add('flex');
+                // Small delay to allow display:flex to apply before animating opacity/transform
+                setTimeout(() => {
+                    ctaModal.classList.remove('opacity-0');
+                    ctaModalContent.classList.remove('scale-95');
+                    ctaModalContent.classList.add('scale-100');
+                }, 10);
+            } else {
+                ctaModal.classList.add('opacity-0');
+                ctaModalContent.classList.remove('scale-100');
+                ctaModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    ctaModal.classList.add('hidden');
+                    ctaModal.classList.remove('flex');
+                }, 300); // Matches the duration-300 class
+            }
+        }
+
+        // Auto-show CTA Modal after 15 seconds (runs only once per browser session)
+        setTimeout(() => {
+            if (!sessionStorage.getItem('ctaShown')) {
+                const isHidden = ctaModal.classList.contains('hidden');
+                if (isHidden) {
+                    toggleCtaModal();
+                }
+            }
+        }, 15000); 
     </script>
 </body>
 </html>
